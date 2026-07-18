@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pack Pilot – Your Smart Travel Companion</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+<!-- ========== SCREEN: Login / Sign Up ========== -->
+<div id="screen-auth" class="screen active">
+  <div class="auth-bg">
+    <div class="auth-blob b1"></div>
+    <div class="auth-blob b2"></div>
+    <div class="auth-blob b3"></div>
+  </div>
+  <div class="auth-card">
+    <div class="logo-mark">✈</div>
+    <h1 class="brand">Pack<span>Pilot</span></h1>
+    <p class="tagline">Your smart travel packing companion</p>
+
+    <div class="tab-row">
+      <button class="tab active" data-tab="login">Log In</button>
+      <button class="tab" data-tab="signup">Sign Up</button>
+    </div>
+
+    <!-- Login -->
+    <div id="tab-login" class="tab-panel active">
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" id="login-email" placeholder="you@example.com" />
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="password" id="login-password" placeholder="••••••••" />
+      </div>
+      <button class="btn-primary full" onclick="doLogin()">Log In</button>
+      <p class="switch-text">Don't have an account? <a href="#" onclick="switchTab('signup'); return false;">Sign up</a></p>
+    </div>
+
+    <!-- Sign Up -->
+    <div id="tab-signup" class="tab-panel">
+      <div class="field-group">
+        <label>Name</label>
+        <input type="text" id="signup-name" placeholder="Your name" />
+      </div>
+      <div class="field-group">
+        <label>Email</label>
+        <input type="email" id="signup-email" placeholder="you@example.com" />
+      </div>
+      <div class="field-group">
+        <label>Password</label>
+        <input type="password" id="signup-password" placeholder="Create password" />
+      </div>
+      <div class="field-group">
+        <label>Date of Birth</label>
+        <input type="date" id="signup-dob" />
+      </div>
+      <button class="btn-primary full" onclick="doSignup()">Create Account</button>
+      <p class="switch-text">Already have an account? <a href="#" onclick="switchTab('login'); return false;">Log in</a></p>
+    </div>
+  </div>
+</div>
+
+<!-- ========== SCREEN: Dashboard ========== -->
+<div id="screen-dashboard" class="screen">
+  <nav class="topbar">
+    <div class="nav-brand">✈ PackPilot</div>
+    <div class="nav-right">
+      <span class="user-greeting" id="user-greeting">Hi, Traveller</span>
+      <button class="nav-icon-btn" onclick="navigateTo('preferences')" title="Preferences">⚙</button>
+      <button class="nav-icon-btn" onclick="doLogout()" title="Logout">↩</button>
+    </div>
+  </nav>
+
+  <main class="dashboard-main">
+    <section class="dash-hero">
+      <h2>Ready for your next adventure?</h2>
+      <button class="btn-primary large" onclick="navigateTo('trip-setup')">+ New Trip</button>
+    </section>
+
+    <div class="dash-grid">
+      <div class="dash-card upcoming-card">
+        <h3>✈ Upcoming Trips</h3>
+        <ul id="upcoming-list" class="trip-list">
+          <li class="empty-state">No upcoming trips yet.</li>
+        </ul>
+      </div>
+      <div class="dash-card past-card">
+        <h3>🕐 Past Trips</h3>
+        <ul id="past-list" class="trip-list">
+          <li class="empty-state">No past trips yet.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="dash-nav-row">
+      <button class="dash-nav-btn" onclick="navigateTo('preferences')"><span>⚙</span> Preferences</button>
+      <button class="dash-nav-btn" onclick="navigateTo('packing-list')"><span>🧳</span> Packing List</button>
+      <button class="dash-nav-btn" onclick="navigateTo('past-trips')"><span>📍</span> Past Trips</button>
+    </div>
+  </main>
+</div>
+
+<!-- ========== SCREEN: Trip Setup ========== -->
+<div id="screen-trip-setup" class="screen">
+  <nav class="topbar">
+    <button class="back-btn" onclick="navigateTo('dashboard')">← Back</button>
+    <div class="nav-brand">✈ PackPilot</div>
+    <div></div>
+  </nav>
+  <main class="form-main">
+    <h2 class="screen-title">Create New Trip</h2>
+
+    <div class="form-card">
+      <div class="field-group">
+        <label>Destination (Country, City)</label>
+        <input type="text" id="trip-destination" placeholder="e.g. Japan, Tokyo" />
+      </div>
+      <div class="field-group">
+        <label>Trip Length (days)</label>
+        <input type="number" id="trip-length" placeholder="e.g. 7" min="1" />
+      </div>
+      <div class="field-row">
+        <div class="field-group">
+          <label>Departure Date</label>
+          <input type="date" id="trip-start" />
+        </div>
+        <div class="field-group">
+          <label>Return Date</label>
+          <input type="date" id="trip-end" />
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Suitcase Size</label>
+        <div class="radio-row">
+          <label class="radio-opt"><input type="radio" name="suitcase" value="cabin" /> Cabin (≤7Kg)</label>
+          <label class="radio-opt"><input type="radio" name="suitcase" value="medium" checked /> Medium (10-15Kg)</label>
+          <label class="radio-opt"><input type="radio" name="suitcase" value="large" /> Large (20Kg+)</label>
+        </div>
+      </div>
+      <div class="field-group">
+        <label>Trip Purpose</label>
+        <div class="checkbox-row">
+          <label class="check-opt"><input type="checkbox" name="purpose" value="leisure" /> 🏖 Leisure</label>
+          <label class="check-opt"><input type="checkbox" name="purpose" value="business" /> 💼 Business</label>
+          <label class="check-opt"><input type="checkbox" name="purpose" value="hiking" /> 🥾 Hiking</label>
+          <label class="check-opt"><input type="checkbox" name="purpose" value="beach" /> 🌊 Beach</label>
+        </div>
+      </div>
+
+      <div class="weather-preview" id="weather-preview" style="display:none">
+        <span class="weather-icon" id="w-icon">🌤</span>
+        <div>
+          <strong id="w-label">Mild weather expected</strong>
+          <small id="w-desc">Pack layers just in case</small>
+        </div>
+      </div>
+
+      <button class="btn-primary full" onclick="createTrip()">Generate Packing List →</button>
+    </div>
+  </main>
+</div>
+
+<!-- ========== SCREEN: Packing List ========== -->
+<div id="screen-packing-list" class="screen">
+  <nav class="topbar">
+    <button class="back-btn" onclick="navigateTo('dashboard')">← Back</button>
+    <div class="nav-brand">✈ PackPilot</div>
+    <div></div>
+  </nav>
+  <main class="packing-main">
+    <h2 class="screen-title">Your Packing List</h2>
+    <div class="trip-info-bar" id="packing-trip-info"></div>
+
+    <div class="progress-bar-wrap">
+      <div class="progress-label">
+        <span>Packing Progress</span>
+        <span id="progress-pct">0%</span>
+      </div>
+      <div class="progress-track">
+        <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+      </div>
+    </div>
+
+    <div class="smart-reminder" id="smart-reminder" style="display:none">
+      <span>🌧</span>
+      <span id="reminder-text">Rain is expected on landing – don't forget your umbrella!</span>
+    </div>
+
+    <div id="packing-categories" class="packing-grid"></div>
+
+    <div class="packing-actions">
+      <button class="btn-secondary" onclick="navigateTo('trip-setup')">New Trip</button>
+      <button class="btn-primary" onclick="buildSuitcaseEstimate()">Suitcase Estimate</button>
+    </div>
+
+    <div id="suitcase-modal" class="modal" style="display:none">
+      <div class="modal-card">
+        <h3>🧳 Suitcase Estimate</h3>
+        <p id="suitcase-summary"></p>
+        <button class="btn-primary full" onclick="closeModal('suitcase-modal')">Close</button>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- ========== SCREEN: Trip Summary ========== -->
+<div id="screen-trip-summary" class="screen">
+  <nav class="topbar">
+    <button class="back-btn" onclick="navigateTo('packing-list')">← Back</button>
+    <div class="nav-brand">✈ PackPilot</div>
+    <div></div>
+  </nav>
+  <main class="form-main">
+    <h2 class="screen-title">Trip Summary</h2>
+    <div class="summary-card" id="summary-card">
+      <div class="summary-row"><span>Destination</span><strong id="s-dest">–</strong></div>
+      <div class="summary-row"><span>Duration</span><strong id="s-dur">–</strong></div>
+      <div class="summary-row"><span>Weather</span><strong id="s-weather">–</strong></div>
+      <div class="summary-row"><span>Suitcase</span><strong id="s-suitcase">–</strong></div>
+      <div class="summary-row"><span>Packing Progress</span><strong id="s-progress">–</strong></div>
+    </div>
+    <button class="btn-primary full" onclick="finishTrip()">Mark Trip as Complete ✓</button>
+  </main>
+</div>
+
+<!-- ========== SCREEN: Past Trips ========== -->
+<div id="screen-past-trips" class="screen">
+  <nav class="topbar">
+    <button class="back-btn" onclick="navigateTo('dashboard')">← Back</button>
+    <div class="nav-brand">✈ PackPilot</div>
+    <div></div>
+  </nav>
+  <main class="form-main">
+    <h2 class="screen-title">Past Trips</h2>
+    <div id="past-trips-list" class="past-trips-grid"></div>
+    <button class="btn-secondary full" onclick="clearPastTrips()">Clear History</button>
+  </main>
+</div>
+
+<!-- ========== SCREEN: Preferences ========== -->
+<div id="screen-preferences" class="screen">
+  <nav class="topbar">
+    <button class="back-btn" onclick="navigateTo('dashboard')">← Back</button>
+    <div class="nav-brand">✈ PackPilot</div>
+    <div></div>
+  </nav>
+  <main class="form-main">
+    <h2 class="screen-title">Preferences</h2>
+
+    <div class="form-card">
+      <h4 class="pref-section-title">Weather Sensitivity</h4>
+      <div class="checkbox-row">
+        <label class="check-opt"><input type="checkbox" id="pref-hot" /> ☀ Hot</label>
+        <label class="check-opt"><input type="checkbox" id="pref-cold" /> ❄ Cold</label>
+        <label class="check-opt"><input type="checkbox" id="pref-both" /> 🌤 Both</label>
+      </div>
+
+      <h4 class="pref-section-title">Activities</h4>
+      <div class="checkbox-row">
+        <label class="check-opt"><input type="checkbox" id="pref-beach" /> 🏖 Beach</label>
+        <label class="check-opt"><input type="checkbox" id="pref-travel" /> ✈ Travelling</label>
+        <label class="check-opt"><input type="checkbox" id="pref-business" /> 💼 Business</label>
+        <label class="check-opt"><input type="checkbox" id="pref-hiking" /> 🥾 Hiking</label>
+      </div>
+
+      <h4 class="pref-section-title">Laundry Access</h4>
+      <div class="radio-row">
+        <label class="radio-opt"><input type="radio" name="laundry" id="pref-laundry-yes" value="yes" /> Yes</label>
+        <label class="radio-opt"><input type="radio" name="laundry" id="pref-laundry-no" value="no" /> No</label>
+      </div>
+
+      <h4 class="pref-section-title">Always Pack</h4>
+      <div class="always-pack-row">
+        <input type="text" id="always-pack-input" placeholder="e.g. Kindle, earplugs..." />
+        <button class="btn-small" onclick="addAlwaysPack()">Add</button>
+      </div>
+      <ul id="always-pack-list" class="tag-list"></ul>
+
+      <button class="btn-primary full" onclick="savePreferences()">Save Preferences</button>
+    </div>
+  </main>
+</div>
+
+<!-- ========== TOAST ========== -->
+<div id="toast" class="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
